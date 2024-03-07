@@ -3,13 +3,32 @@ const User = require('../userModel/usersSchema')
 const attendanceSchema = require('../attendanceModel/attendanceSchema')
 
 const TeacherSchema = new mongoose.Schema({ 
-    subjectSpeciality: {type: mongoose.Schema.Types.ObjectId, ref: "Subject", required: true},
+    subjectSpeciality: String,
     teachingClasses: [{type: String}],
     branches: [{type: String}],
     teaching: [{
-        branch: {type: mongoose.Schema.Types.ObjectId, ref: "Branch", required: true},
-        class: {type: mongoose.Schema.Types.ObjectId, ref: "Class", required: true},
-        subject: {type: mongoose.Schema.Types.ObjectId, ref: "Subject", required: true},
+        branch: String,
+        class: String,
+        subject: String,
+    }],
+    notes: [
+        {
+            notesTitle: String,
+            notesDescription: String,
+            branch: String,
+            class: String,
+            subject: String,
+            noteURL: String,
+        }
+    ],
+    notice: [{
+        title: String,
+        content: String,
+        date: Date,
+        to: {
+            branch: String,
+            class: String,
+        }
     }],
     attendance: [attendanceSchema]
 })

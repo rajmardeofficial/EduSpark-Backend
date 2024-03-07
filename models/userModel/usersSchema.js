@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     phone: { type: Number, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
     bloodGroup: { type: String },
 }, { discriminatorKey: 'role', timestamps: true });
 
