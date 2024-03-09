@@ -9,10 +9,10 @@ const EducationalDetailsSchema = new mongoose.Schema({
 
 const StudentSchema = new mongoose.Schema({
     educationalDetails: EducationalDetailsSchema,
-    castCategory: {type: String},
+    castCategory: { type: String },
     examResult: [
         {
-            test: String,
+            test: { type: mongoose.Schema.Types.ObjectId, ref: "Test" },
             marksObtained: {
                 type: Number
             }
@@ -23,7 +23,18 @@ const StudentSchema = new mongoose.Schema({
             document: { type: mongoose.Schema.Types.ObjectId, ref: 'Document' },
             status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
         }
-    ]
+    ],
+
+    platformCharges: {
+        paidStatus: { type: Boolean, required: true, default: false },
+        payment_id: {type: String, required: true},
+        date: {
+            type: Date,
+            default: Date.now
+        },
+    },
+    
+    
 });
 
 module.exports = User.discriminator('Student', StudentSchema);

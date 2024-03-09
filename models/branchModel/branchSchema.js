@@ -6,6 +6,8 @@ const BranchSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+
+    
 })
 
 module.exports = mongoose.model('Branch', BranchSchema);

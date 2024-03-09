@@ -7,6 +7,8 @@ const paymentSchema = new Schema({
     datePaid: { type: Date, default: Date.now },
     installmentNumber: { type: Number },
     paymentMethod: { type: String, enum: ['online', 'cash'], required: true },
+    payment_id: {type: String, required: true},
+    order_id: {type: String, required: true},
   });
 
   module.exports = mongoose.model('Payment', paymentSchema)
