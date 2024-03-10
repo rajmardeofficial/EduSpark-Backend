@@ -10,6 +10,7 @@ const EducationalDetailsSchema = new mongoose.Schema({
 const StudentSchema = new mongoose.Schema({
     educationalDetails: EducationalDetailsSchema,
     castCategory: { type: String },
+    parentPhone: Number,
     examResult: [
         {
             test: { type: mongoose.Schema.Types.ObjectId, ref: "Test" },

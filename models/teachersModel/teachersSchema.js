@@ -4,8 +4,6 @@ const attendanceSchema = require('../attendanceModel/attendanceSchema')
 
 const TeacherSchema = new mongoose.Schema({ 
     subjectSpeciality: String,
-    teachingClasses: [{type: String}],
-    branches: [{type: String}],
     teaching: [{
         branch: String,
         class: String,
