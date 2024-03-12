@@ -1,8 +1,18 @@
 const mongoose = require('mongoose')
-const User = require('../userModel/usersSchema')
 
 const LibrarianSchema = new mongoose.Schema({
-    // Fields will be added if necessary
+    firstName: { type: String, required: true },
+    middleName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    phone: { type: Number, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
+    role: { type: String, default: "Admin" },
+    bloodGroup: { type: String },
+    institute:{type:mongoose.Schema.Types.ObjectId, ref: "Institute",required:true},
+    roleType:{type:String,enums:['School','Jr College','College'],required:true},
+
     ebook: [
         {
             Title: {type: String, required: true},
@@ -13,7 +23,8 @@ const LibrarianSchema = new mongoose.Schema({
             ebookURL: String,
         }
     ],
+
 })
 
-const Librarian = User.discriminator('Librarian', LibrarianSchema)
-module.exports = Librarian
+const Librarian = mongoose.model('Librarian', LibrarianSchema);
+module.exports = Librarian;

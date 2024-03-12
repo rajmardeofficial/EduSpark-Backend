@@ -10,8 +10,12 @@ const TestSchema = new mongoose.Schema({
     },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "Teacher" },
     createdFor: {
-        class: String,
-        branch: String,
+        class: {type: mongoose.Schema.Types.ObjectId,
+        ref: "Class"},
+        branch: {type: mongoose.Schema.Types.ObjectId,
+        ref: "Branch"},
+        course: {type: mongoose.Schema.Types.ObjectId,
+        ref: "Course"},
     }
 })
 

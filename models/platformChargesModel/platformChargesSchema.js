@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const PlatformCharges = new mongoose.Schema({
+const PlatformChargesSchema = new mongoose.Schema({
     amount: {type: Number, required: true},
     instituteName: {type: String, required: true},
     createdAt: {
@@ -8,3 +8,5 @@ const PlatformCharges = new mongoose.Schema({
         default: Date.now // Set default value to current date/time
     }
 })
+
+module.exports = mongoose.model("PlatformCharges",PlatformChargesSchema);
