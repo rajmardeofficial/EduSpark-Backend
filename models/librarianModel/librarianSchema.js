@@ -8,7 +8,7 @@ const LibrarianSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-    role: { type: String, default: "Admin" },
+    role: { type: String, default: "Librarian" },
     bloodGroup: { type: String },
     institute:{type:mongoose.Schema.Types.ObjectId, ref: "Institute",required:true},
     roleType:{type:String,enums:['School','Jr College','College'],required:true},

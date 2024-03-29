@@ -44,7 +44,7 @@ const StudentCollegeSchema = new mongoose.Schema({
 
     platformCharges: {
         paidStatus: { type: Boolean, required: true, default: false },
-        payment_id: {type: String, required: true},
+        payment_id: {type: String, default: null},
         date: {
             type: Date,
             default: Date.now
