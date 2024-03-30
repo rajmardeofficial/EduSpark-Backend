@@ -60,7 +60,7 @@ const TeacherCollegeSchema = new mongoose.Schema({
       isPresent: { type: Boolean, default: false },
     },
   ],
-});
+},{timestamps:true});
 
 const TeacherCollege = mongoose.model("TeacherCollege", TeacherCollegeSchema);
 module.exports = TeacherCollege;

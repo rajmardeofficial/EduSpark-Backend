@@ -47,7 +47,7 @@ const TeacherSchoolSchema = new mongoose.Schema({
           isPresent: { type: Boolean, default: false },
         },
       ],
-})
+},{timestamps:true});
 
 const TeacherSchool = mongoose.model('TeacherSchool', TeacherSchoolSchema);
 module.exports = TeacherSchool;

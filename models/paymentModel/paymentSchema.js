@@ -11,4 +11,4 @@ const paymentSchema = new Schema({
     order_id: {type: String, required: true},
   });
 
-  module.exports = mongoose.model('Payment', paymentSchema)
+  module.exports = mongoose.model('Payment', paymentSchema);
