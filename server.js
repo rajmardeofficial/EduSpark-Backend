@@ -9,17 +9,23 @@ const branchSchema = require("./models/branchModel/branchSchema");
 const CourseSchema = require("./models/courseModel/CourseSchema");
 const classSchema = require("./models/classModel/classSchema");
 
+const collegeTeacherRoutes = require("./routes/TeacherRouters"); //TEACHER ROUTES
+
 const app = express();
 dotenv.config();
 app.use(express.json());
 
 mongoose
-  .connect(`mongodb://localhost:27017/Eduspark`, {
+  .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(console.log("connected to the mongoDB"))
   .catch((err) => console.log("Not Connected To The Network", err));
+
+///TEACHER ROUTES
+app.use("/college-teacher", collegeTeacherRoutes);
+//TEACHER ROUTES
 
 app.post("/save", async (req, res) => {
   console.log("hello");
