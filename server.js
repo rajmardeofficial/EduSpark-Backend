@@ -17,8 +17,7 @@ mongoose
   .then(console.log("connected to the mongoDB"))
   .catch((err) => console.log("Not Connected To The Network", err));
 
-// const platformCharges = require("./controllers/Payment/PlatformCharges");
-const platformRoutes = require("./routes/payment/PlatformRoutes")
+const platformRoutes = require("./routes/payment/PlatformRoutes");
 
 app.use("/auth/platformCharges", platformRoutes);
 
