@@ -1,15 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const {
-  addCollegeTeacher,
   CollegeTeacherAttendance,
   CollegeTeacherNotice,
   CollegeTeacherNotes,
-  CollegeTeacherTeaching,
 } = require("../controllers/Teacher/addAttendance");
-
-// Route to add a new college teacher
-router.post("/add", addCollegeTeacher);
+const {
+  CollegeTeacherTeaching,
+} = require("../controllers/Admin/TeacherTeaching");
 
 // Route to handle attendance
 router.post("/attendances/:id", CollegeTeacherAttendance);
