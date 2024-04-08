@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const feesSchema = new Schema({
+const feesSchema = new mongoose.Schema({
     feeId: { type: String, required: true },
     feeName: String, 
     castCategory: { type: String, required: true },

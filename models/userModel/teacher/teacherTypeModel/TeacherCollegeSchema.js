@@ -51,16 +51,12 @@ const TeacherCollegeSchema = new mongoose.Schema({
   ],
   attendance: [
     {
-      student: {
-        type: ObjectId,
-        ref: "Student",
-        required: false,
-      },
+      halfDay: {type:String, default:false},
       date: { type: Date, required: false },
       isPresent: { type: Boolean, default: false },
     },
   ],
-});
+},{timestamps:true});
 
 const TeacherCollege = mongoose.model("TeacherCollege", TeacherCollegeSchema);
 module.exports = TeacherCollege;

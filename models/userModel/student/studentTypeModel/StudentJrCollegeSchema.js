@@ -49,6 +49,27 @@ const StudentJrCollegeSchema = new mongoose.Schema({
             default: Date.now
         },
     },
+    attendance: [
+        {
+          teacher: {
+            type:ObjectId,
+            ref: "Teacher",
+            required: false,
+          },
+          subject:{
+            type:ObjectId,
+            ref: "Subject",
+            required: false,
+          },
+          class:{
+            type:ObjectId,
+            ref: "Class",
+            required: false,
+          },
+          date: { type: Date, default: Date.now, required: false },
+          isPresent: { type: Boolean, default: false },
+        },
+      ],
     
     
 },{timestamps:true});

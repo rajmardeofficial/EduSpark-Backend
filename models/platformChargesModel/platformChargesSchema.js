@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const PlatformChargesSchema = new mongoose.Schema({
     amount: {type: Number, required: true},
-    instituteName: {type: String, required: true},
+    institute: {type: mongoose.Schema.Types.ObjectId, ref:"Institute", required: true},
     createdAt: {
         type: Date,
         default: Date.now // Set default value to current date/time
