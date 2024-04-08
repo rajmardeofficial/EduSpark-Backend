@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
+// const collegeTeacherRoutes = require("./routes/TeacherRouters"); //TEACHER ROUTES
+
 const app = express();
 dotenv.config();
 app.use(express.json());
