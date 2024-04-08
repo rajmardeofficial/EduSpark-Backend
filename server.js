@@ -19,9 +19,7 @@ mongoose
 
 const platformRoutes = require("./routes/payment/PlatformRoutes");
 const studentRoutes = require("./routes/student/StudentRoutes");
-const StudentCollege = require("./models/userModel/student/studentTypeModel/StudentCollegeSchema");
-const subjectSchema = require("./models/subjectModel/subjectSchema");
-const testSchema = require("./models/testModel/testSchema");
+
 
 app.use("/auth/platformCharges", platformRoutes);
 app.use("/auth/student", studentRoutes);
