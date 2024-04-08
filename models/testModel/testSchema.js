@@ -16,7 +16,13 @@ const TestSchema = new mongoose.Schema({
         ref: "Branch"},
         course: {type: mongoose.Schema.Types.ObjectId,
         ref: "Course"},
+    },
+    questionPaper: {type:String,required:false},
+    answerkey: {type:String,required:false},
+    testType: {
+        type: String,
+        enum: ["mcq", "handwritten"]
     }
-})
+},{timestamps:true})
 
 module.exports = mongoose.model('Test', TestSchema);

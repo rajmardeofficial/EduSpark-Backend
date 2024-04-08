@@ -56,7 +56,7 @@ const addLibrarian = async (req, res) => {
   } catch (error) {
     console.error("Error adding teacher:", error);
     res.status(500).json({ message: "Internal server error" });
-    p;
+    
   }
 };
 

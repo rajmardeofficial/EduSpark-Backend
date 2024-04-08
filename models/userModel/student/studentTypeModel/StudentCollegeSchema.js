@@ -6,7 +6,7 @@ const EducationalDetailsSchema = new mongoose.Schema({
     course: {type: ObjectId, ref: "Course"},
     branch: {type: ObjectId, ref: "Branch"},
     class: {type: ObjectId, ref: "Class"},
-    semester:String,
+    semester:{type:String,required:false},
 }, { _id: false });
 
 
@@ -51,6 +51,27 @@ const StudentCollegeSchema = new mongoose.Schema({
             default: Date.now
         },
     },
+    attendance: [
+    {
+      teacher: {
+        type:ObjectId,
+        ref: "Teacher",
+        required: false,
+      },
+      subject:{
+        type:ObjectId,
+        ref: "Subject",
+        required: false,
+      },
+      class:{
+        type:ObjectId,
+        ref: "Class",
+        required: false,
+      },
+      date: { type: Date, default: Date.now, required: false },
+      isPresent: { type: Boolean, default: false },
+    },
+  ],
     
     
 },{timestamps:true});
