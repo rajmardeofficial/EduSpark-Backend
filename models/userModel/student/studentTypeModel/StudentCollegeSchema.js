@@ -1,17 +1,19 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const EducationalDetailsSchema = new mongoose.Schema({
-    course: {type: ObjectId, ref: "Course"},
-    branch: {type: ObjectId, ref: "Branch"},
-    class: {type: ObjectId, ref: "Class"},
-    semester:{type:String,required:false},
-}, { _id: false });
+const EducationalDetailsSchema = new mongoose.Schema(
+  {
+    course: { type: ObjectId, ref: "Course" },
+    branch: { type: ObjectId, ref: "Branch" },
+    class: { type: ObjectId, ref: "Class" },
+    semester: { type: String, required: false },
+  },
+  { _id: false }
+);
 
-
-const StudentCollegeSchema = new mongoose.Schema({
-
+const StudentCollegeSchema = new mongoose.Schema(
+  {
     firstName: { type: String, required: true },
     middleName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -19,62 +21,78 @@ const StudentCollegeSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-    role:{type: String, default:"Student"},
+    role: { type: String, default: "Student" },
     bloodGroup: { type: String },
-    roleType: {type:String,default:"College"},
-    institute:{type:ObjectId, ref: "Institute"},
+    roleType: { type: String, default: "College" },
+    institute: { type: ObjectId, ref: "Institute" },
 
     educationalDetails: EducationalDetailsSchema,
     castCategory: { type: String },
     parentPhone: Number,
     examResult: [
-        {
-            test: { type: ObjectId, ref: "Test" },
-            marksObtained: {
-                type: Number
-            }
-        }
+      {
+        test: { type: ObjectId, ref: "Test" },
+        marksObtained: {
+          type: Number,
+        },
+        answerOfStudent: {
+          type: String,
+        },
+      },
     ],
     documentRequests: [
-        {
-            document: { type: ObjectId, ref: 'Document' },
-            status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
-        }
+      {
+        document:{ type: ObjectId, ref: "Document" },
+        status: {
+          type: String,
+          enum: ["pending", "approved", "rejected"],
+          default: "pending",
+        },
+        paidStatus: {type: Boolean, default: false},
+        order_id: { type: String, default: null },
+        payment_id: { type: String, default: null },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        // documentFile: {type: String, required: false}, // if we send the document online
+      },
     ],
 
     platformCharges: {
-        paidStatus: { type: Boolean, default: false},
-        order_id: {type: String, default: false},
-        payment_id: {type: String, default: null},
-        date: {
-            type: Date,
-            default: Date.now
-        },
+      paidStatus: { type: Boolean, default: false },
+      order_id: { type: String, default: null },
+      payment_id: { type: String, default: null },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
+    
     attendance: [
-    {
-      teacher: {
-        type:ObjectId,
-        ref: "Teacher",
-        required: false,
+      {
+        teacher: {
+          type: ObjectId,
+          ref: "Teacher",
+          required: false,
+        },
+        subject: {
+          type: ObjectId,
+          ref: "Subject",
+          required: false,
+        },
+        class: {
+          type: ObjectId,
+          ref: "Class",
+          required: false,
+        },
+        date: { type: Date, default: Date.now, required: false },
+        isPresent: { type: Boolean, default: false },
       },
-      subject:{
-        type:ObjectId,
-        ref: "Subject",
-        required: false,
-      },
-      class:{
-        type:ObjectId,
-        ref: "Class",
-        required: false,
-      },
-      date: { type: Date, default: Date.now, required: false },
-      isPresent: { type: Boolean, default: false },
-    },
-  ],
-    
-    
-},{timestamps:true});
+    ],
+  },
+  { timestamps: true }
+);
 
-const StudentCollege = mongoose.model('StudentCollege', StudentCollegeSchema);
+const StudentCollege = mongoose.model("StudentCollege", StudentCollegeSchema);
 module.exports = StudentCollege;

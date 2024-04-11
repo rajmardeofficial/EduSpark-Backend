@@ -8,7 +8,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 // get all subject of particular student
 // get all tests of subject(which is displayed through testName in frontend)
-// get examresult of particular test
+// store some analysis data
 
 const getAllSubjectOfStudent = async(req,res) => {
     try {
@@ -69,7 +69,7 @@ const getAllTestOfParticularSubjectOfParticularStudent = async (req, res) => {
                 .populate({
                     path: "examResult.test",
                     match: { subject: subjectId },
-                    select: "test totalMarks testName", 
+                    select: "test totalMarks testName questionPaper answerKey questionPaper",
                 })
                 .select("examResult");
         
@@ -84,11 +84,11 @@ const getAllTestOfParticularSubjectOfParticularStudent = async (req, res) => {
     }
 };
 
-// getAllDataOfParticular test
-const getAllDataOfParticularTest = async(req,res) => {
+// store some analysis data
+const store = async(req,res) => {
     try {
-        const {question,answer} = req.params;
-        console.log(question,answer);
+        const {someData} = req.params;
+        console.log(someData);
     } catch (error) {
         console.error("Error while fetching all data of particular test", error);
         res.status(500).json({ message: "Internal server error" }); 

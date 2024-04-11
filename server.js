@@ -2,9 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-
-// const collegeTeacherRoutes = require("./routes/TeacherRouters"); //TEACHER ROUTES
-
 const app = express();
 dotenv.config();
 app.use(express.json());
@@ -19,10 +16,14 @@ mongoose
   .then(console.log("connected to the mongoDB"))
   .catch((err) => console.log("Not Connected To The Network", err));
 
+const TeacherRoutes = require("./routes/TeacherRouters");
 const platformRoutes = require("./routes/payment/PlatformRoutes");
 const studentRoutes = require("./routes/student/StudentRoutes");
+const StudentCollege = require("./models/userModel/student/studentTypeModel/StudentCollegeSchema");
+const testSchema = require("./models/testModel/testSchema");
+const documentSchema = require("./models/documentModel/documentSchema");
 
-
+app.use("/api", TeacherRoutes);
 app.use("/auth/platformCharges", platformRoutes);
 app.use("/auth/student", studentRoutes);
 
@@ -65,56 +66,74 @@ app.use("/auth/student", studentRoutes);
 
 //Add college student
 
-// app.post("/saveStudent", async (req, res) => {
-//   console.log("hello");
-//   try {
-//     const student = {
-//       firstName: "Alice",
-//       middleName: "Elizabeth",
-//       lastName: "Smith",
-//       phone: 9876543210,
-//       email: "alice.smith@example.com",
-//       password: "sdfosj",
-//       gender: "Female",
-//       institute: "65f08788b441c29e42643d62",
-//       educationalDetails: {
-//         course: "65f08b3ccca605073b4c1558", // Replace with the actual Course ID
-//         branch: "65f08a7eb91e471d4dbdac1a",
-//         class: "65f08c07648a104587537db7",
-//       },
-//       attendance: [
-//         {
-//           teacher: "65f987654321098765432109", // Replace with actual Teacher ID
-//           subject: "65f876543210987654321098", // Replace with actual Subject ID
-//           class: "65f765432109876543210987", // Replace with actual Class ID
-//           semester: "Spring 2024",
-//           date: new Date(), // Replace with the actual date
-//           isPresent: false // Replace with the actual attendance status
-//         },
-//         {
-//           teacher: "65f987654321098765432109", // Replace with actual Teacher ID
-//           subject: "65f876543210987654321098", // Replace with actual Subject ID
-//           class: "65f765432109876543210987", // Replace with actual Class ID
-//           semester: "Spring 2024",
-//           date: new Date(), // Replace with the actual date
-//           isPresent: true // Replace with the actual attendance status
-//         }
-//       ],
-//       castCategory: "xyz",
-//       parentPhone: 9876543210,
-//     };
+app.post("/saveStudent", async (req, res) => {
+  console.log("hello");
+  try {
+    const student = {
+      firstName: "Alice",
+      middleName: "Elizabeth",
+      lastName: "Smith",
+      phone: 9876543210,
+      email: "alice.smith@example.com",
+      password: "sdfosj",
+      gender: "Female",
+      institute: "65f08788b441c29e42643d62",
+      educationalDetails: {
+        course: "65f08b3ccca605073b4c1558", // Replace with the actual Course ID
+        branch: "65f08a7eb91e471d4dbdac1a",
+        class: "65f08c07648a104587537db7",
+      },
+      attendance: [
+        {
+          teacher: "65f987654321098765432109", // Replace with actual Teacher ID
+          subject: "65f876543210987654321098", // Replace with actual Subject ID
+          class: "65f765432109876543210987", // Replace with actual Class ID
+          semester: "seventh",
+          date: new Date(), // Replace with the actual date
+          isPresent: false // Replace with the actual attendance status
+        },
+        {
+          teacher: "65f987654321098765432109", // Replace with actual Teacher ID
+          subject: "65f876543210987654321098", // Replace with actual Subject ID
+          class: "65f765432109876543210987", // Replace with actual Class ID
+          semester: "fifth",
+          date: new Date(), // Replace with the actual date
+          isPresent: true // Replace with the actual attendance status
+        }
+      ],
+      castCategory: "xyz",
+      parentPhone: 9876543210,
+    };
 
-//     // Create an instance of CollegeStudent
-//     const studentInstance = new StudentCollege(student);
+    // Create an instance of CollegeStudent
+    const studentInstance = new StudentCollege(student);
 
-//     // Save the data to the database
-//     const data = await studentInstance.save();
-//     console.log(data);
-//     res.status(200).send({ data });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+    // Save the data to the database
+    const data = await studentInstance.save();
+    console.log(data);
+    res.status(200).send({ data });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post('/documents', async (req, res) => {
+  try {
+    // Create a new document instance using spread syntax
+    console.log(req.body);
+    const newDocument = new documentSchema({
+      ...req.body
+    });
+
+    // Save the document to the database
+    await newDocument.save();
+
+    res.status(201).json({ message: 'Document saved successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 // app.get("/getattendance", async(req,res) => {
 //   try {
@@ -154,36 +173,39 @@ app.use("/auth/student", studentRoutes);
 // });
 
 // // for test
-// const ObjectId = require("mongoose").Types.ObjectId;
-// app.post('/savetest', async (req, res) => {
-//   try {
-//       let { testName, testDescription, totalMarks, subject, createdBy, createdFor } = req.body;
+const ObjectId = require("mongoose").Types.ObjectId;
+app.post('/savetest', async (req, res) => {
+  try {
+      let { testName, testDescription, totalMarks, subject, createdBy, createdFor,questionPaper,answerKey,testType } = req.body;
 
-//       // Create a new test instance
-//       subject = new ObjectId(subject);
-//       createdBy = new ObjectId(createdBy);
-//       createdFor.class = new ObjectId(createdFor.class);
-//       createdFor.branch = new ObjectId(createdFor.branch);
-//       createdFor.course = new ObjectId(createdFor.course);
+      // Create a new test instance
+      subject = new ObjectId(subject);
+      createdBy = new ObjectId(createdBy);
+      createdFor.class = new ObjectId(createdFor.class);
+      createdFor.branch = new ObjectId(createdFor.branch);
+      createdFor.course = new ObjectId(createdFor.course);
 
-//       const newTest = new testSchema({
-//           testName,
-//           testDescription,
-//           totalMarks,
-//           subject,
-//           createdBy,
-//           createdFor
-//       });
+      const newTest = new testSchema({
+          testName,
+          testDescription,
+          totalMarks,
+          subject,
+          createdBy,
+          createdFor,
+          questionPaper,
+          answerKey,
+          testType
+      });
 
-//       // Save the test to the database
-//       await newTest.save();
+      // Save the test to the database
+      await newTest.save();
 
-//       res.status(201).json({ message: 'Test saved successfully', test: newTest });
-//   } catch (error) {
-//       console.error('Error saving test:', error);
-//       res.status(500).json({ message: 'Failed to save test', error: error.message });
-//   }
-// });
+      res.status(201).json({ message: 'Test saved successfully', test: newTest });
+  } catch (error) {
+      console.error('Error saving test:', error);
+      res.status(500).json({ message: 'Failed to save test', error: error.message });
+  }
+});
 
 // // Add Branch
 
