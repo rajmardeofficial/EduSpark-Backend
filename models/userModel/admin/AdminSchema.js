@@ -25,17 +25,6 @@ const AdminSchema = new mongoose.Schema({
   },
   institute:{type:mongoose.Schema.Types.ObjectId, ref: "Institute", required:"true"},
 
-  documentRequests: [
-    {
-      student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-      document: { type: mongoose.Schema.Types.ObjectId, ref: "Document" },
-      status: {
-        type: String,
-        enum: ["pending", "approved", "rejected"],
-        default: "pending",
-      },
-    },
-  ],
 }, {timestamps:true});
 
 const Admin = mongoose.model("Admin", AdminSchema);

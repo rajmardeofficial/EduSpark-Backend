@@ -120,7 +120,7 @@ const paymentVerification = async (req, res) => {
           for (const documentId of data1.documentsIds) {
             await collection.updateOne(
               {
-                email: data1.email, 
+                email: data1.email,
                 "documentRequests.document": documentId,
               },
               {
