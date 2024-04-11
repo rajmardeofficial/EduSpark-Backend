@@ -29,19 +29,36 @@ const StudentSchoolSchema = new mongoose.Schema({
             test: { type: ObjectId, ref: "Test" },
             marksObtained: {
                 type: Number
+            },
+            answerOfStudent: {
+              type: String,
             }
         }
     ],
+
     documentRequests: [
-        {
-            document: { type: ObjectId, ref: 'Document' },
-            status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
-        }
+      {
+        document: { type: ObjectId, ref: "Document" },
+        status: {
+          type: String,
+          enum: ["pending", "approved", "rejected"],
+          default: "pending",
+        },
+        paidStatus: {type: Boolean, default: false},
+        order_id: { type: String, default: null },
+        payment_id: { type: String, default: null },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        // documentFile: {type: String, required: false}, // if we send the document online
+      },
     ],
 
     platformCharges: {
         paidStatus: { type: Boolean, required: true, default: false },
-        payment_id: {type: String, required: true},
+        order_id: { type: String, default: null },
+        payment_id: { type: String, default: null },
         date: {
             type: Date,
             default: Date.now

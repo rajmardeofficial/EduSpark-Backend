@@ -9,6 +9,7 @@ const feesSchema = new mongoose.Schema({
     paymentMethods: [{ type: String }],
     institute:{type:mongoose.Schema.Types.ObjectId, ref: "Institute",required:true},
     feesType:{type:String,enums:['School','Jr College','College'],required:true},
+    
   });
 
-  module.exports = mongoose.model('Fees', feesSchema)
+  module.exports = mongoose.model('Fees', feesSchema);

@@ -18,7 +18,7 @@ const TestSchema = new mongoose.Schema({
         ref: "Course"},
     },
     questionPaper: {type:String,required:false},
-    answerkey: {type:String,required:false},
+    answerKey: {type:String,required:false},
     testType: {
         type: String,
         enum: ["mcq", "handwritten"]

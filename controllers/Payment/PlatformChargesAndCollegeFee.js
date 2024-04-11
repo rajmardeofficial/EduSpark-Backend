@@ -57,17 +57,17 @@ const paymentVerification = async (req, res) => {
     // Verify the signature
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     let expectedSignature;
-    if(to === "Company"){
+    if (to === "Company") {
       expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
-      .update(body)
-      .digest("hex");
-    }else{
+        .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
+        .update(body)
+        .digest("hex");
+    } else {
       console.log(to);
       expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_API_SECRET1)
-      .update(body)
-      .digest("hex");
+        .createHmac("sha256", process.env.RAZORPAY_API_SECRET1)
+        .update(body)
+        .digest("hex");
     }
 
     const isAuthentic = expectedSignature === razorpay_signature;
@@ -96,15 +96,48 @@ const paymentVerification = async (req, res) => {
               email: data1?.email,
             });
           }
+
           console.log(student?.platformCharges?.paidStatus);
           const statusOfPlatformCharges = {
             paidStatus: true,
+            order_id: razorpay_order_id,
             payment_id: razorpay_payment_id,
             date: Date.now(),
           };
           await student?.updateOne({
             $set: { platformCharges: statusOfPlatformCharges },
           });
+          res.redirect(`http://localhost:3000/addStudent`);
+        } else if (to === "CollegeDocumentFee") {
+          console.log(data1?.documentsIds);
+          const collection =
+            studentType === "College"
+              ? StudentCollege
+              : studentType === "Jr College"
+              ? StudentJrCollege
+              : StudentSchool;
+
+          for (const documentId of data1.documentsIds) {
+            await collection.updateOne(
+              {
+                email: data1.email, 
+                "documentRequests.document": documentId,
+              },
+              {
+                $set: {
+                  "documentRequests.$": {
+                    paidStatus: false,
+                    order_id: razorpay_order_id,
+                    payment_id: razorpay_payment_id,
+                    date: Date.now(),
+                  },
+                },
+              }
+            );
+          }
+          console.log("Documents updated successfully!");
+          console.log("newData");
+
           res.redirect(`http://localhost:3000/addStudent`);
         } else {
           data1.payment_id = razorpay_payment_id;
