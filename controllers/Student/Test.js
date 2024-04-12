@@ -10,9 +10,8 @@ const ObjectId = require("mongoose").Types.ObjectId;
 // get all tests of subject(which is displayed through testName in frontend)
 // store some analysis data
 
-const getAllSubjectOfStudent = async(req,res) => { // I have to write some optimized code here
+const getAllSubjectOfStudent = async(req,res) => {
     try {
-    // let { roleType, instituteId, courseId, classId, branchId, semester } = req.body;
     let {roleType,studentId} = req.params;
     
     const collection = roleType === "College" ? StudentCollege :
