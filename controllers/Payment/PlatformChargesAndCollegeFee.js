@@ -111,32 +111,30 @@ const paymentVerification = async (req, res) => {
         } else if (to === "CollegeDocumentFee") {
           console.log(data1?.documentsIds);
           const collection =
-            studentType === "College"
+            data1?.studentType === "College"
               ? StudentCollege
-              : studentType === "Jr College"
+              : data1?.studentType === "Jr College"
               ? StudentJrCollege
               : StudentSchool;
 
-          for (const documentId of data1.documentsIds) {
-            await collection.updateOne(
-              {
-                email: data1.email,
-                "documentRequests.document": documentId,
-              },
-              {
-                $set: {
-                  "documentRequests.$": {
-                    paidStatus: false,
-                    order_id: razorpay_order_id,
-                    payment_id: razorpay_payment_id,
-                    date: Date.now(),
-                  },
-                },
-              }
-            );
-          }
+              for (const documentId of data1.documentsIds) {
+                await collection.updateOne(
+                    {
+                        email: data1.email,
+                        "documentRequests.document": documentId,
+                    },
+                    {
+                        $set: {
+                            "documentRequests.$.paidStatus": true,
+                            "documentRequests.$.order_id": razorpay_order_id,
+                            "documentRequests.$.payment_id": razorpay_payment_id,
+                            "documentRequests.$.date": Date.now(),
+                        },
+                    }
+                );
+            }
+            
           console.log("Documents updated successfully!");
-          console.log("newData");
 
           res.redirect(`http://localhost:3000/addStudent`);
         } else {
