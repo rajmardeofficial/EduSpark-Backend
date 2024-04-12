@@ -12,35 +12,42 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 const getAllSubjectOfStudent = async(req,res) => {
     try {
-    let { roleType, instituteId, courseId, classId, branchId, semester } = req.body;
+    let {roleType,studentId} = req.params;
+    
+    const collection = roleType === "College" ? StudentCollege :
+        roleType === "Jr College" ? StudentJrCollege :
+        StudentSchool;
 
-    console.log(instituteId,classId, branchId,semester);
+    const studentData = await collection.findById(studentId).select("educationalDetails institute");
+    console.log(studentData);    
+    
     let subjects;
 
     if(roleType === "College"){
+        console.log(roleType);
         subjects = await Subject.find({
             $and: [
-                { institute: instituteId },
-                { course: courseId },
-                { class: classId },
-                { branch: branchId },
-                { semester: semester }
+                { institute: studentData?.institute },
+                { course: studentData?.educationalDetails?.course },
+                { class: studentData?.educationalDetails?.class },
+                { branch: studentData?.educationalDetails?.branch },
+                { semester: studentData?.educationalDetails?.semester }
             ]
         }).select('name');
     } else if (roleType === "Jr College"){
         subjects = await Subject.find({
             $and: [
-                { institute: instituteId },
-                { course: courseId },
-                { class: classId },
-                { branch: branchId },
+                { institute: studentData?.institute },
+                { course: studentData?.educationalDetails?.course },
+                { class: studentData?.educationalDetails?.class },
+                { branch: studentData?.educationalDetails?.branch },
             ]
         }).select('name');
     } else{
         subjects = await Subject.find({
             $and: [
-                { institute: instituteId },
-                { class: classId },
+                { institute: studentData?.institute },
+                { class: studentData?.educationalDetails?.class },
             ]
         }).select('name');
     }
