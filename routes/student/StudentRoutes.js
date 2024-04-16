@@ -9,13 +9,11 @@ router.post("/getattendance/:studentId", getTotalAttendance);
 router.post("/getattendanceofparticularmonth/:studentId", getAttendanceOfParticularMonth);
 
 //for test
-router.get("/getallsubjectofstudent/:roleType/:studentId",getAllSubjectOfStudent);
-router.post("/getalltestofparticularsubject/:studentId",getAllTestOfParticularSubjectOfParticularStudent);
+router.get("/getallsubjectofstudent/:roleType/:studentId", getAllSubjectOfStudent);
+router.post("/getalltestofparticularsubject/:studentId", getAllTestOfParticularSubjectOfParticularStudent);
 
 //for documents
-router.get("/getalldocsofstudent/:roleType/:studentId",getAllDocumentsOfParticularStudent);
-router.post("/sendrequestfordocs/:roleType/:studentId",sendRequestForDocument);
-
+router.get("/getalldocsofstudent/:roleType/:studentId", getAllDocumentsOfParticularStudent);
 
 
 module.exports = router;

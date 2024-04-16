@@ -82,6 +82,7 @@ const paymentVerification = async (req, res) => {
         console.log(data1);
 
         if (to === "Company") {
+          //handlePlatformCharges
           let student;
           if (data1?.studentType == "School") {
             student = await StudentSchool.findOne({
@@ -108,36 +109,48 @@ const paymentVerification = async (req, res) => {
             $set: { platformCharges: statusOfPlatformCharges },
           });
           res.redirect(`http://localhost:3000/addStudent`);
+
         } else if (to === "CollegeDocumentFee") {
-          console.log(data1?.documentsIds);
-          const collection =
-            data1?.studentType === "College"
-              ? StudentCollege
-              : data1?.studentType === "Jr College"
-              ? StudentJrCollege
-              : StudentSchool;
-
-              for (const documentId of data1.documentsIds) {
-                await collection.updateOne(
-                    {
-                        email: data1.email,
-                        "documentRequests.document": documentId,
+          //handleDocumentRequest
+          try {
+            console.log(data1?.documentsIds);
+            const collection =
+              data1?.studentType === "College"
+                ? StudentCollege
+                : data1?.studentType === "Jr College"
+                ? StudentJrCollege
+                : StudentSchool;
+  
+              await collection
+              .findByIdAndUpdate(
+                data1?.studentId,
+                {
+                  $push: {
+                    documentRequests: {
+                      $each: data1?.documentsIds.map((documentId) => ({
+                        document: documentId,
+                        status: "approved",
+                        paidStatus:true,
+                        order_id:razorpay_order_id,
+                        payment_id:razorpay_payment_id,
+                        date:Date.now(),
+                      })),
                     },
-                    {
-                        $set: {
-                            "documentRequests.$.paidStatus": true,
-                            "documentRequests.$.order_id": razorpay_order_id,
-                            "documentRequests.$.payment_id": razorpay_payment_id,
-                            "documentRequests.$.date": Date.now(),
-                        },
-                    }
-                );
-            }
-            
-          console.log("Documents updated successfully!");
+                  },
+                },
+                { new: true }
+              )
+              .select("documentRequests.document");
+              
+            console.log("Documents updated successfully!");
+            res.redirect(`http://localhost:3000/addStudent`);
+          } catch (error) {
+            console.log("error in requesting document");
+            res.status(500).json({ message: "Internal server error" });
+          }
 
-          res.redirect(`http://localhost:3000/addStudent`);
         } else {
+          //handle school/JrCollege/College fee
           data1.payment_id = razorpay_payment_id;
           data1.order_id = razorpay_order_id;
           let payment = new Payment(data1);
@@ -146,11 +159,15 @@ const paymentVerification = async (req, res) => {
         }
       } catch (error) {
         console.log(error);
+        res.status(500).json({ message: "Internal server error" });
       }
     } else {
       console.log("log");
+      res.status(500).json({ message: "Not Authentic" });
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 module.exports = { getKey, checkOut, paymentVerification };

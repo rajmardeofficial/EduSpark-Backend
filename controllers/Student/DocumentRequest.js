@@ -47,46 +47,11 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
 
     documentData = await documentSchema.find({ $and: commonQuery });
 
-    res.status(200).json({ documentData: documentData }); 
+    res.status(200).json({ documentData: documentData });
   } catch (error) {
     console.log("error in getting documents");
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// handle request Document
-const sendRequestForDocument = async(req,res) => {
-  try {
-
-    const {studentId,roleType} = req.params;
-    const {documentsIds} = req.body;
-
-    console.log(documentsIds,studentId,roleType);
-
-    const collection = roleType === "College"?StudentCollege:roleType === "Jr College"?StudentJrCollege:StudentSchool;
-    const updatedStudent = await collection.findByIdAndUpdate(
-      studentId,
-      {
-        $push: {
-          documentRequests: {
-            $each: documentsIds.map(documentId => ({
-              document: documentId,
-            })),
-          },
-        },
-      },
-      { new: true }
-    ).select("documentRequests.document");
-
-    if (!updatedStudent) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-
-    console.log("Documents requested successfully");
-    res.status(200).json({ message: "Documents requested successfully"});
-  } catch (error) {
-    console.log("error in getting documents");
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
-module.exports = { getAllDocumentsOfParticularStudent, sendRequestForDocument };
+module.exports = { getAllDocumentsOfParticularStudent };
