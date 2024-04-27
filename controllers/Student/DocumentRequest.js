@@ -11,7 +11,6 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
   try {
     const roleType = req.params.roleType;
     const studentId = req.params.studentId;
-    console.log(studentId, roleType);
 
     // know getting course,branch,class,semester from student
     const collection =
@@ -45,7 +44,7 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
       );
     }
 
-    documentData = await documentSchema.find({ $and: commonQuery });
+    documentData = await documentSchema.find({ $and: commonQuery }).select("documentName fees");
 
     res.status(200).json({ documentData: documentData });
   } catch (error) {
@@ -54,4 +53,42 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
   }
 };
 
-module.exports = { getAllDocumentsOfParticularStudent };
+const sendRequestForDocument = async (req,res) => {
+  try {
+    const {roleType, studentId,documentsIds} = req.body;
+    console.log(roleType,studentId,documentsIds);
+
+    const collection =
+    roleType === "College"
+      ? StudentCollege
+      : roleType === "Jr College"
+      ? StudentJrCollege
+      : StudentSchool;
+
+    await collection
+    .findByIdAndUpdate(
+      studentId,
+      {
+        $push: {
+          documentRequests: {
+            $each: documentsIds?.map((documentId) => ({
+              document: documentId,
+              status: "pending",
+              date:Date.now(),
+            })),
+          },
+        },
+      },
+      { new: true }
+    )
+    .select("documentRequests.document");
+    
+  console.log("Documents updated successfully!");
+  res.status(200).send({message:"Request successfull"});
+  } catch (error) {
+    console.log("error in requesting documents");
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+module.exports = { getAllDocumentsOfParticularStudent, sendRequestForDocument };

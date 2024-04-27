@@ -127,9 +127,9 @@ const paymentVerification = async (req, res) => {
                 {
                   $push: {
                     documentRequests: {
-                      $each: data1?.documentsIds.map((documentId) => ({
+                      $each: data1?.documentsIds?.map((documentId) => ({
                         document: documentId,
-                        status: "approved",
+                        status: "pending",
                         paidStatus:true,
                         order_id:razorpay_order_id,
                         payment_id:razorpay_payment_id,
@@ -140,12 +140,12 @@ const paymentVerification = async (req, res) => {
                 },
                 { new: true }
               )
-              .select("documentRequests.document");
+              .select("documentRequests?.document");
               
             console.log("Documents updated successfully!");
-            res.redirect(`http://localhost:3000/addStudent`);
+            res.redirect(`http://localhost:3000/requestDocument`);
           } catch (error) {
-            console.log("error in requesting document");
+            console.log("error in requesting document",error);
             res.status(500).json({ message: "Internal server error" });
           }
 

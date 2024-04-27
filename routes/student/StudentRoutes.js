@@ -14,6 +14,6 @@ router.post("/getalltestofparticularsubject/:studentId", getAllTestOfParticularS
 
 //for documents
 router.get("/getalldocsofstudent/:roleType/:studentId", getAllDocumentsOfParticularStudent);
-
+router.post("/reqdocuments",sendRequestForDocument);
 
 module.exports = router;
