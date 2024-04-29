@@ -85,7 +85,9 @@ const StudentSchoolSchema = new mongoose.Schema({
           isPresent: { type: Boolean, default: false },
         },
       ],
-    
+      fees: {
+        amountPaid: {type:Number},
+      }
     
 },{timestamps:true});
 

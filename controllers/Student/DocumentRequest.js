@@ -11,7 +11,6 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
   try {
     const roleType = req.params.roleType;
     const studentId = req.params.studentId;
-    console.log(studentId, roleType);
 
     // know getting course,branch,class,semester from student
     const collection =
@@ -45,48 +44,51 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
       );
     }
 
-    documentData = await documentSchema.find({ $and: commonQuery });
+    documentData = await documentSchema.find({ $and: commonQuery }).select("documentName fees");
 
-    res.status(200).json({ documentData: documentData }); 
+    res.status(200).json({ documentData: documentData });
   } catch (error) {
     console.log("error in getting documents");
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// handle request Document
-const sendRequestForDocument = async(req,res) => {
+const sendRequestForDocument = async (req,res) => {
   try {
+    const {roleType, studentId,documentsIds} = req.body;
+    console.log(roleType,studentId,documentsIds);
 
-    const {studentId,roleType} = req.params;
-    const {documentsIds} = req.body;
+    const collection =
+    roleType === "College"
+      ? StudentCollege
+      : roleType === "Jr College"
+      ? StudentJrCollege
+      : StudentSchool;
 
-    console.log(documentsIds,studentId,roleType);
-
-    const collection = roleType === "College"?StudentCollege:roleType === "Jr College"?StudentJrCollege:StudentSchool;
-    const updatedStudent = await collection.findByIdAndUpdate(
+    await collection
+    .findByIdAndUpdate(
       studentId,
       {
         $push: {
           documentRequests: {
-            $each: documentsIds.map(documentId => ({
+            $each: documentsIds?.map((documentId) => ({
               document: documentId,
+              status: "pending",
+              date:Date.now(),
             })),
           },
         },
       },
       { new: true }
-    ).select("documentRequests.document");
-
-    if (!updatedStudent) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-
-    console.log("Documents requested successfully");
-    res.status(200).json({ message: "Documents requested successfully"});
+    )
+    .select("documentRequests.document");
+    
+  console.log("Documents updated successfully!");
+  res.status(200).send({message:"Request successfull"});
   } catch (error) {
-    console.log("error in getting documents");
+    console.log("error in requesting documents");
     res.status(500).json({ message: "Internal server error" });
   }
 }
+
 module.exports = { getAllDocumentsOfParticularStudent, sendRequestForDocument };
