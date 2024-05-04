@@ -3,9 +3,12 @@ const nodemailer = require('nodemailer')
 // transporter object with Gmail SMTP configuration
 const transporter = nodemailer.createTransport({
     service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
-        user: 'your-email@example.com',
-        pass: 'your-password'
+        user: 'eduspark.developement@gmail.com',
+        pass: process.env.NODEMAILER_GOOGLE_PASSWORD
     }
 });
 
@@ -14,7 +17,7 @@ module.exports.sendMail = async (to, subject, text) => {
     try {
         // Send email
         await transporter.sendMail({
-            from: 'your-email@example.com',
+            from: 'Eduspark System Generated',
             to,
             subject,
             text
