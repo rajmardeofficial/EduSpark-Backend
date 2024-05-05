@@ -22,7 +22,7 @@ const TeacherCollegeSchema = new mongoose.Schema({
       branch: { type: ObjectId, ref: "Branch" },
       class: { type: ObjectId, ref: "Class" },
       semester:String,
-      subject: { type: ObjectId, ref: "Subject" },
+      subject: { type: ObjectId, ref: "Subject"},
     },
   ],
   notes: [

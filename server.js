@@ -21,10 +21,15 @@ mongoose
 const TeacherRoutes = require("./routes/TeacherRouters");
 const platformRoutes = require("./routes/payment/PlatformRoutes");
 const studentRoutes = require("./routes/student/StudentRoutes");
+const AdminRoutes = require('./routes/Admin/adminRouters');
+const { login } = require("./controllers/authController");
 
 app.use("/api", TeacherRoutes);
 app.use("/auth/platformCharges", platformRoutes);
 app.use("/auth/student", studentRoutes);
+app.use("/admin", AdminRoutes);
+
+app.post("/login", login)
 
 
 app.listen(port, () => {

@@ -1,4 +1,4 @@
-const User = require("../../models/userModel/usersSchema");
+// const User = require("../../models/userModel/usersSchema");
 const bcrypt = require("bcrypt");
 const generateStrongPassword = require("../../utils/passwordGenerator");
 const { sendMail } = require("../../utils/mailer");
@@ -7,7 +7,7 @@ const StudentSchool = require("../../models/userModel/student/studentTypeModel/S
 const StudentJrCollege = require("../../models/userModel/student/studentTypeModel/StudentJrCollegeSchema");
 
 const addSchoolStudent = async (req, res) => {
-  try {
+  try { 
     const {
       firstName,
       middleName,
