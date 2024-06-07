@@ -113,7 +113,7 @@ const paymentVerification = async (req, res) => {
         } else if (to === "CollegeDocumentFee") {
           //handleDocumentRequest
           try {
-            console.log(data1?.documentsIds,req.user.id);
+
             const collection =
               data1?.studentType === "College"
                 ? StudentCollege
@@ -123,7 +123,8 @@ const paymentVerification = async (req, res) => {
   
               await collection
               .findByIdAndUpdate(
-                req?.user?.id, //studentid
+                req?.user?.id,
+
                 {
                   $push: {
                     documentRequests: {
@@ -144,6 +145,7 @@ const paymentVerification = async (req, res) => {
               
             console.log("Documents updated successfully!");
             res.status(200).json("payment Successfull");
+
           } catch (error) {
             console.log("error in requesting document",error);
             res.status(500).json({ message: "Internal server error" });
