@@ -6,18 +6,11 @@ const TeacherSchool = require("../../models/userModel/teacher/teacherTypeModel/T
 const TeacherJrCollege = require("../../models/userModel/teacher/teacherTypeModel/TeacherJrCollegeSchema");
 
 const addTeacher = async (req, res) => {
+  console.log(req.body);
   try {
     const {
-      firstName,
-      middleName,
-      lastName,
-      phone,
+      phoneNum,
       email,
-      gender,
-      bloodGroup,
-      subjectSpeciality,
-      teaching,
-      institute, // Added roleType in the request body
     } = req.body;
 
     const roleType = req.params.roletype; // Accessing roleType from req.params
@@ -55,46 +48,40 @@ const addTeacher = async (req, res) => {
 
     // Create a new teacher instance
     const newTeacher = new TeacherModel({
-      firstName,
-      middleName,
-      lastName,
-      phone,
+      phone: phoneNum,
       password: hashedPassword,
-      email,
-      gender,
-      bloodGroup,
-      subjectSpeciality,
-      institute,
+      ...req.body,
     });
+    console.log("hello",newTeacher);
 
     // Handle the teaching array dynamically based on the teacher type
-    switch (roleType) {
-      case "College":
-        newTeacher.teaching = teaching.map((item) => ({
-          course: item.course,
-          branch: item.branch,
-          class: item.class,
-          semester: item.semester,
-          subject: item.subject,
-        }));
-        break;
-      case "School":
-        newTeacher.teaching = teaching.map((item) => ({
-          class: item.class,
-          subject: item.subject,
-        }));
-        break;
-      case "JrCollege":
-        newTeacher.teaching = teaching.map((item) => ({
-          course: item.course,
-          branch: item.branch,
-          class: item.class,
-          subject: item.subject,
-        }));
-        break;
-      default:
-        break;
-    }
+    // switch (roleType) {
+    //   case "College":
+    //     newTeacher.teaching = teaching.map((item) => ({
+    //       course: item.course,
+    //       branch: item.branch,
+    //       class: item.class,
+    //       semester: item.semester,
+    //       subject: item.subject,
+    //     }));
+    //     break;
+    //   case "School":
+    //     newTeacher.teaching = teaching.map((item) => ({
+    //       class: item.class,
+    //       subject: item.subject,
+    //     }));
+    //     break;
+    //   case "JrCollege":
+    //     newTeacher.teaching = teaching.map((item) => ({
+    //       course: item.course,
+    //       branch: item.branch,
+    //       class: item.class,
+    //       subject: item.subject,
+    //     }));
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     // Save the new Teacher to the database
     await newTeacher.save();

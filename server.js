@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
 dotenv.config();
+const bcrypt = require("bcrypt");
 
 const port = process.env.PORT || 5000;
 app.use(express.json());
@@ -28,8 +29,7 @@ app.use("/api", TeacherRoutes);
 app.use("/auth/platformCharges", platformRoutes);
 app.use("/auth/student", studentRoutes);
 app.use("/admin", AdminRoutes);
-
-app.post("/login", login)
+app.post("/login", login);
 
 
 app.listen(port, () => {

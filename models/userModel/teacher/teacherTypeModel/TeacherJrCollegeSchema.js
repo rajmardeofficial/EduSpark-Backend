@@ -5,7 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const TeacherJrCollegeSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
-    middleName: { type: String, required: true },
+    middleName: { type: String},
     lastName: { type: String, required: true },
     phone: { type: Number, required: true },
     email: { type: String, required: true },

@@ -106,6 +106,7 @@ const StudentSchool = require("../models/userModel/student/studentTypeModel/Stud
 const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
+    console.log(req.body);
 
     let userModel;
     switch (role) {
@@ -141,12 +142,13 @@ const login = async (req, res) => {
     if (!existingUser) {
       res.status(401).json({ message: "User does not exists" });
     }
-
     //check if password is correct
     const isPasswordValid = await bcrypt.compare(
       password,
       existingUser.password
     );
+    console.log(isPasswordValid);
+
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid Credentials" });
@@ -161,24 +163,36 @@ const login = async (req, res) => {
         firstName: existingUser.firstName,
         lastName: existingUser.lastName,
         id: existingUser._id,
-        role: existingUser.role
+        role: existingUser.role,
+        roleType: existingUser.roleType,
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
+    console.log(token);
 
     //Send Token in response
-    res.status(200).json({ token });
-  } catch (e) {
+    res
+      .status(200)
+      .json({
+        token,
+        email: existingUser.email,
+        firstName: existingUser.firstName,
+        lastName: existingUser.lastName,
+        role: existingUser.role,
+        roleType: existingUser.roleType,
+      });
+  } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "Internal server error" });
-  } 
+  }
 };
 
 //Authenticate function to verify the jwt
 
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization;
+  // console.log(token + "hello");
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: Missing token" });
@@ -196,7 +210,8 @@ const authenticate = (req, res, next) => {
 
 // Middleware to authorize admin access
 const authorizeAdmin = (req, res, next) => {
-  if (req.user.role === "admin") {
+  console.log(req.user);
+  if (req.user.role === "Admin") {
     next();
   } else {
     res.status(403).json({ message: "Unauthorized: Access forbidden" });
@@ -205,7 +220,7 @@ const authorizeAdmin = (req, res, next) => {
 
 // Middleware to authorize teacher access
 const authorizeTeacher = (req, res, next) => {
-  if (req.user.role == "Jr College" || "School" || "College") {
+  if (req.user.role == "Teacher") {
     next();
   } else {
     res.status(403).json({ message: "Unauthorized: Access forbidden" });
@@ -214,7 +229,7 @@ const authorizeTeacher = (req, res, next) => {
 
 // Middleware to authorize student access
 const authorizeStudent = (req, res, next) => {
-  if (req.user.role === "student") {
+  if (req.user.role === "Student") {
     next();
   } else {
     res.status(403).json({ message: "Unauthorized: Access forbidden" });

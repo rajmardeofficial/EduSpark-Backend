@@ -18,6 +18,7 @@ const addSchoolStudent = async (req, res) => {
       gender,
       bloodGroup,
       studentClass,
+      roleType,
     } = req.body;
 
     // Check if the student already exists

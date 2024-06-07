@@ -9,5 +9,6 @@ const router = express.Router();
 
 //Route to add teacher
 router.post("/add-teacher/:roletype", authenticate, authorizeAdmin, addTeacher);
+// router.post("/add-student/:roletype", authenticate, authorizeAdmin, addStu);
 
 module.exports = router;
