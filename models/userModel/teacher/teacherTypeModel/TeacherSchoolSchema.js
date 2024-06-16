@@ -24,6 +24,8 @@ const TeacherSchoolSchema = new mongoose.Schema({
         {
             notesTitle: String,
             notesDescription: String,
+            document: String,
+            date: Date,
             class:{type: ObjectId,ref:"Class"},
             subject:{type: ObjectId,ref:"Subject"},
         }
@@ -31,10 +33,11 @@ const TeacherSchoolSchema = new mongoose.Schema({
     notice: [{
         title: String,
         content: String,
+        document: String,
         date: Date,
-        to: {
-            class:{type: ObjectId,ref:"Class"},
-        }
+        // to: {
+        //     class:{type: ObjectId,ref:"Class"},
+        // }
     }],
     attendance: [
         {

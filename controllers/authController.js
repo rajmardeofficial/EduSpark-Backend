@@ -181,6 +181,7 @@ const login = async (req, res) => {
         lastName: existingUser.lastName,
         role: existingUser.role,
         roleType: existingUser.roleType,
+        institute:existingUser.institute,
       });
   } catch (error) {
     console.error("Error during login:", error);

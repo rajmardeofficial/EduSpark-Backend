@@ -4,6 +4,7 @@ const {getTotalAttendance, getAttendanceOfParticularMonth} = require("../../cont
 const { getAllSubjectOfStudent, getAllTestOfParticularSubjectOfParticularStudent } = require("../../controllers/Student/Test");
 const {getAllDocumentsOfParticularStudent, sendRequestForDocument} = require("../../controllers/Student/DocumentRequest");
 const { authenticate, authorizeStudent } = require("../../controllers/authController");
+const { getAllNotice } = require("../../controllers/Student/Notice");
 
 //for attendance
 router.post("/getattendance", authenticate, authorizeStudent, getTotalAttendance);
@@ -16,5 +17,8 @@ router.post("/getalltestofparticularsubject", getAllTestOfParticularSubjectOfPar
 //for documents
 router.get("/getalldocsofstudent/:roleType",authenticate, authorizeStudent, getAllDocumentsOfParticularStudent);
 router.post("/reqdocuments",authenticate, authorizeStudent,sendRequestForDocument);
+
+//for notice
+router.get("/getnotices/:institute/:selectedAuthority/:roleType",authenticate, authorizeStudent, getAllNotice);
 
 module.exports = router;

@@ -29,6 +29,8 @@ const TeacherJrCollegeSchema = new mongoose.Schema(
       {
         notesTitle: String,
         notesDescription: String,
+        document: String,
+        date: Date,
         course: { type: ObjectId, ref: "Course" },
         branch: { type: ObjectId, ref: "Branch" },
         class: { type: ObjectId, ref: "Class" },
@@ -39,12 +41,13 @@ const TeacherJrCollegeSchema = new mongoose.Schema(
       {
         title: String,
         content: String,
+        document: String,
         date: Date,
-        to: {
-          course: { type: ObjectId, ref: "Course" },
-          branch: { type: ObjectId, ref: "Branch" },
-          class: { type: ObjectId, ref: "Class" },
-        },
+        // to: {
+        //   course: { type: ObjectId, ref: "Course" },
+        //   branch: { type: ObjectId, ref: "Branch" },
+        //   class: { type: ObjectId, ref: "Class" },
+        // },
       },
     ],
     attendance: [
