@@ -10,7 +10,8 @@ const documentSchema = require("../../models/documentModel/documentSchema");
 const getAllDocumentsOfParticularStudent = async (req, res) => {
   try {
     const roleType = req.params.roleType;
-    const studentId = req.params.studentId;
+    const studentId = req?.user?.id;
+    console.log(roleType,studentId);
 
     // know getting course,branch,class,semester from student
     const collection =
@@ -55,7 +56,8 @@ const getAllDocumentsOfParticularStudent = async (req, res) => {
 
 const sendRequestForDocument = async (req,res) => {
   try {
-    const {roleType, studentId,documentsIds} = req.body;
+    const studentId = req?.user?.id;
+    const {roleType,documentsIds} = req.body;
     console.log(roleType,studentId,documentsIds);
 
     const collection =

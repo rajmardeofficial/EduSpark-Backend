@@ -113,7 +113,7 @@ const paymentVerification = async (req, res) => {
         } else if (to === "CollegeDocumentFee") {
           //handleDocumentRequest
           try {
-            console.log(data1?.documentsIds);
+
             const collection =
               data1?.studentType === "College"
                 ? StudentCollege
@@ -123,7 +123,8 @@ const paymentVerification = async (req, res) => {
   
               await collection
               .findByIdAndUpdate(
-                data1?.studentId,
+                req?.user?.id,
+
                 {
                   $push: {
                     documentRequests: {
@@ -143,7 +144,8 @@ const paymentVerification = async (req, res) => {
               .select("documentRequests?.document");
               
             console.log("Documents updated successfully!");
-            res.redirect(`http://localhost:3000/requestDocument`);
+            res.status(200).json("payment Successfull");
+
           } catch (error) {
             console.log("error in requesting document",error);
             res.status(500).json({ message: "Internal server error" });
@@ -151,6 +153,8 @@ const paymentVerification = async (req, res) => {
 
         } else {
           //handle school/JrCollege/College fee
+          console.log(data1)
+          data1.studentId = req?.user?.id;
           data1.payment_id = razorpay_payment_id;
           data1.order_id = razorpay_order_id;
           let payment = new Payment(data1);

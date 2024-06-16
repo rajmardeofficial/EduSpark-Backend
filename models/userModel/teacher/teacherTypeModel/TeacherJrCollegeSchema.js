@@ -5,7 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const TeacherJrCollegeSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
-    middleName: { type: String, required: true },
+    middleName: { type: String},
     lastName: { type: String, required: true },
     phone: { type: Number, required: true },
     email: { type: String, required: true },
@@ -29,6 +29,8 @@ const TeacherJrCollegeSchema = new mongoose.Schema(
       {
         notesTitle: String,
         notesDescription: String,
+        document: String,
+        date: Date,
         course: { type: ObjectId, ref: "Course" },
         branch: { type: ObjectId, ref: "Branch" },
         class: { type: ObjectId, ref: "Class" },
@@ -39,12 +41,13 @@ const TeacherJrCollegeSchema = new mongoose.Schema(
       {
         title: String,
         content: String,
+        document: String,
         date: Date,
-        to: {
-          course: { type: ObjectId, ref: "Course" },
-          branch: { type: ObjectId, ref: "Branch" },
-          class: { type: ObjectId, ref: "Class" },
-        },
+        // to: {
+        //   course: { type: ObjectId, ref: "Course" },
+        //   branch: { type: ObjectId, ref: "Branch" },
+        //   class: { type: ObjectId, ref: "Class" },
+        // },
       },
     ],
     attendance: [

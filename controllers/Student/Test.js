@@ -12,19 +12,18 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 const getAllSubjectOfStudent = async(req,res) => {
     try {
-    let {roleType,studentId} = req.params;
+    let {roleType} = req.params;
+    let studentId = req?.user?.id;
     
     const collection = roleType === "College" ? StudentCollege :
         roleType === "Jr College" ? StudentJrCollege :
         StudentSchool;
 
     const studentData = await collection.findById(studentId).select("educationalDetails institute");
-    console.log(studentData);    
     
     let subjects;
 
     if(roleType === "College"){
-        console.log(roleType);
         subjects = await Subject.find({
             $and: [
                 { institute: studentData?.institute },
@@ -61,7 +60,7 @@ const getAllSubjectOfStudent = async(req,res) => {
 
 const getAllTestOfParticularSubjectOfParticularStudent = async (req, res) => {
     try {
-        const studentId = req.params.studentId;
+        const studentId = req?.user?.id;;
         const { roleType, subjectId } = req.body;
         console.log(studentId,roleType,subjectId);
 

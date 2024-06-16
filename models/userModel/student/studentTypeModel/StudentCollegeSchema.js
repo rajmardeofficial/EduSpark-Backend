@@ -15,9 +15,10 @@ const EducationalDetailsSchema = new mongoose.Schema(
 const StudentCollegeSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
-    middleName: { type: String, required: true },
+    middleName: { type: String},
     lastName: { type: String, required: true },
     phone: { type: Number, required: true },
+    rollNo: { type: Number, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },

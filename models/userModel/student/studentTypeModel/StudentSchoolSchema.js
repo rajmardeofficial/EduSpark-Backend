@@ -1,39 +1,42 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const EducationalDetailsSchema = new mongoose.Schema({
-    class: {type: ObjectId, ref: "Class"},
-}, { _id: false });
+const EducationalDetailsSchema = new mongoose.Schema(
+  {
+    class: { type: ObjectId, ref: "Class" },
+  },
+  { _id: false }
+);
 
-
-const StudentSchoolSchema = new mongoose.Schema({
-
+const StudentSchoolSchema = new mongoose.Schema(
+  {
     firstName: { type: String, required: true },
-    middleName: { type: String, required: true },
+    middleName: { type: String},
     lastName: { type: String, required: true },
+    rollNo: { type: Number, required: true },
     phone: { type: Number, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-    role:{type: String, default:"Student"},
+    role: { type: String, default: "Student" },
     bloodGroup: { type: String },
-    roleType: {type:String,default:"School"},
-    institute:{type:ObjectId, ref: "Institute"},
+    roleType: { type: String, default: "School" },
+    institute: { type: ObjectId, ref: "Institute" },
 
     educationalDetails: EducationalDetailsSchema,
     castCategory: { type: String },
     parentPhone: Number,
     examResult: [
-        {
-            test: { type: ObjectId, ref: "Test" },
-            marksObtained: {
-                type: Number
-            },
-            answerOfStudent: {
-              type: String,
-            }
-        }
+      {
+        test: { type: ObjectId, ref: "Test" },
+        marksObtained: {
+          type: Number,
+        },
+        answerOfStudent: {
+          type: String,
+        },
+      },
     ],
 
     documentRequests: [
@@ -44,7 +47,7 @@ const StudentSchoolSchema = new mongoose.Schema({
           enum: ["pending", "approved", "rejected"],
           default: "pending",
         },
-        paidStatus: {type: Boolean, default: false},
+        paidStatus: { type: Boolean, default: false },
         order_id: { type: String, default: null },
         payment_id: { type: String, default: null },
         date: {
@@ -56,40 +59,41 @@ const StudentSchoolSchema = new mongoose.Schema({
     ],
 
     platformCharges: {
-        paidStatus: { type: Boolean, required: true, default: false },
-        order_id: { type: String, default: null },
-        payment_id: { type: String, default: null },
-        date: {
-            type: Date,
-            default: Date.now
-        },
+      paidStatus: { type: Boolean, required: true, default: false },
+      order_id: { type: String, default: null },
+      payment_id: { type: String, default: null },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
     attendance: [
-        {
-          teacher: {
-            type:ObjectId,
-            ref: "Teacher",
-            required: false,
-          },
-          subject:{
-            type:ObjectId,
-            ref: "Subject",
-            required: false,
-          },
-          class:{
-            type:ObjectId,
-            ref: "Class",
-            required: false,
-          },
-          date: { type: Date, default: Date.now, required: false },
-          isPresent: { type: Boolean, default: false },
+      {
+        teacher: {
+          type: ObjectId,
+          ref: "Teacher",
+          required: false,
         },
-      ],
-      fees: {
-        amountPaid: {type:Number},
-      }
-    
-},{timestamps:true});
+        subject: {
+          type: ObjectId,
+          ref: "Subject",
+          required: false,
+        },
+        class: {
+          type: ObjectId,
+          ref: "Class",
+          required: false,
+        },
+        date: { type: Date, default: Date.now, required: false },
+        isPresent: { type: Boolean, default: false },
+      },
+    ],
+    fees: {
+      amountPaid: { type: Number },
+    },
+  },
+  { timestamps: true }
+);
 
-const StudentSchool = mongoose.model('StudentSchool', StudentSchoolSchema);
+const StudentSchool = mongoose.model("StudentSchool", StudentSchoolSchema);
 module.exports = StudentSchool;
